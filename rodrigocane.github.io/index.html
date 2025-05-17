@@ -42,13 +42,22 @@
       cursor: default;
       position: relative;
     }
-    .aula {
+    .CORR2, .SA, .REV {
       background-color: #c8e6c9;
       border-radius: 50%;
     }
-    .prova {
+    .Prova {
       background-color: #ffcdd2;
       border-radius: 50%;
+    }
+   .TESI {
+	background-color: rgb(0, 253, 154);
+	border-radius: 50%;
+    }
+    .Feriado {
+	background-color: #e0e0e0;
+	border-radius: 50%;
+	font-weight: bold;
     }
     .calendar td:hover::after {
       content: '';
@@ -105,27 +114,29 @@
 
   <script>
     const aulas = [
-      { data: '2025-05-07', tema: 'SA com Cane', obs: '' },
-      { data: '2025-05-13', tema: 'SA com Cane', obs: '' },
-      { data: '2025-05-14', tema: 'SA', obs: '' },
-      { data: '2025-05-20', tema: 'SA', obs: '' },
-	  { data: '2025-05-21', tema: 'SA', obs: '' },
-      { data: '2025-05-27', tema: 'Revisão', obs: '' },
-      { data: '2025-05-28', tema: 'Prova Objetiva 2', obs: 'PHP, SQL, Ajax' },
-      { data: '2025-06-03', tema: 'Correção', obs: '' },      
-      { data: '2025-06-04', tema: 'SA', obs: '' },      
-      { data: '2025-06-05', tema: 'SA', obs: '*<i>Aula com outro docente</i>' },
-      { data: '2025-06-10', tema: 'SA', obs: '(Caso alguém precise, teremos a REC da Prova 2)' },
-      { data: '2025-06-11', tema: 'SA', obs: '' },
-      { data: '2025-06-12', tema: 'SA', obs: '*<i>Aula com outro docente</i>' },
-      { data: '2025-06-17', tema: 'Qualidade', obs: '' },
-      { data: '2025-06-18', tema: 'Qualidade', obs: '' },
-      { data: '2025-06-24', tema: 'Prova Prática 1', obs: 'Exercício individual PHP sem internet (Caio style)' },      
-      { data: '2025-06-25', tema: 'SA', obs: '' },
-      { data: '2025-06-26', tema: 'SA', obs: '*<i>Aula com outro docente</i>' },
-      { data: '2025-07-01', tema: 'SA', obs: '' },
-      { data: '2025-07-02', tema: 'SA', obs: 'Apresentação SA' },
-      { data: '2025-07-03', tema: 'SA', obs: '*Exame com outro docente' }
+      { data: '2025-05-07 ', tema: 'SA', obs: '' },
+      { data: '2025-05-13 ', tema: 'SA', obs: '' },
+      { data: '2025-05-14 ', tema: 'SA', obs: '' },	    
+      { data: '2025-05-20 ', tema: 'SA', obs: '' },
+      { data: '2025-05-22 ', tema: 'TESI', obs: '*<i>Testes de Sistemas</i>' },
+      { data: '2025-05-27 ', tema: 'SA', obs: '' },
+      { data: '2025-05-29 ', tema: 'TESI', obs: '*<i>Testes de Sistemas</i>' },
+      { data: '2025-06-03 ', tema: 'REV', obs: 'Revisão Prova Objetiva 2' },      
+      { data: '2025-06-05 ', tema: 'SA', obs: '*<i>Aula com outro docente</i>' },
+      { data: '2025-06-10 ', tema: 'Prova', obs: 'Prova Objetiva 2' },
+      { data: '2025-06-12 ', tema: 'SA', obs: '*<i>Aula com outro docente</i>' },
+      { data: '2025-06-17 ', tema: 'CORR2', obs: 'Correção Prova 2' },
+      { data: '2025-06-18 ', tema: 'CORR2', obs: 'Mais Correção Mais Prova 2' },
+      { data: '2025-06-19 ', tema: 'Feriado', obs: 'Corpus Christi' },
+      { data: '2025-06-24 ', tema: 'Prova', obs: 'REC Prova 2' },
+      { data: '2025-06-25 ', tema: 'SA', obs: '' },
+      { data: '2025-06-26 ', tema: 'SA', obs: '*<i>Aula com outro docente</i>' },      
+      { data: '2025-07-01 ', tema: 'Prova', obs: 'Exercício individual PHP sem internet (Caio style)' },      
+      { data: '2025-07-02 ', tema: 'SA', obs: '' },
+      { data: '2025-07-03 ', tema: 'SA', obs: '*<i>Aula com outro docente</i>' },
+      { data: '2025-07-08 ', tema: 'Prova', obs: 'Apresentação SA' },
+      { data: '2025-07-09 ', tema: 'Prova', obs: 'REC SA' },
+      { data: '2025-07-10 ', tema: 'Prova', obs: '*Exame com outro docente' }
     ];
 
     const meses = [
@@ -137,7 +148,7 @@
     function criarCalendario(mes, ano) {
       const semanas = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
       const primeiroDia = new Date(ano, mes, 1);
-      const ultimoDia = new Date(ano, mes + 1, 0);
+      const ultimoDia = new Date(ano, mes, 0);
       let calendario = '<table class="calendar"><thead><tr>' + semanas.map(d => `<th>${d}</th>`).join('') + '</tr></thead><tbody><tr>';
       let diaSemana = primeiroDia.getDay();
 
@@ -146,14 +157,10 @@
       }
 
       for (let dia = 1; dia <= ultimoDia.getDate(); dia++) {
-        const dataStr = `${ano}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+        const dataStr = `${ano}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')} `;
         const aula = aulas.find(a => a.data === dataStr);
         const temOutroProf = aula && aula.obs && aula.obs.includes('*');
-        const className = aula
-          ? /Prova|Apresenta|Exame/.test(aula.tema) || /Prova|Apresenta|Exame/.test(aula.obs)
-            ? 'prova'
-            : 'aula'
-          : '';
+        const className = aula ? aula.tema : '';
         const asterisco = temOutroProf ? ' asterisco' : '';
         const title = aula ? (aula.obs.replace(/\*/g, '').replace('<i>', '').replace('</i>','') || aula.tema) : '';
         calendario += `<td class="${className}${asterisco}" data-ref="${dataStr}" title="${title}">${dia}</td>`;
@@ -178,7 +185,7 @@
       let html = '<table class="agenda"><thead><tr><th>Data</th><th>Tema</th><th>Obs</th></tr></thead><tbody>';
       registros.forEach(a => {
 		const dataCalc = new Date(a.data);
-		dataCalc.setDate(dataCalc.getDate() + 1);
+
         const dataBr = dataCalc.toLocaleDateString('pt-BR');
         html += `<tr data-ref="${a.data}"><td>${dataBr}</td><td>${a.tema}</td><td>${a.obs}</td></tr>`;
       });
@@ -229,7 +236,7 @@
 	const celulas = document.querySelectorAll('.calendar td[data-ref]');
 	celulas.forEach(celula => {
 	  const dataCelula = celula.getAttribute('data-ref');
-	  if (dataCelula === `${anoHoje}-${mesHoje}-${diaHoje}`) {
+	  if (dataCelula === `${anoHoje}-${mesHoje}-${diaHoje} `) {
 		celula.classList.add('hoje');
 	  }
 	});
