@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Como ser um DEV em 2025</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      padding: 20px;
+    }
+
+    h1 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .actions button {
+      margin-left: 10px;
+      padding: 8px 12px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      background: #555;
+      color: white;
+      cursor: pointer;
+    }
+
+    .quadrado {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      counter-reset: item;
+    }
+
+    .tópico {
+      margin-left: 20px;
+      margin-top: 5px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      counter-increment: item;
+    }
+
+    .tópico .header::before {
+      content: counters(item, ".") " ";
+      font-weight: bold;
+    }
+
+    .tópico .header {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tópico.n0 {
+      color: #999;
+      font-style: italic;
+    }
+
+    .tópico.n1 .header::after { content: " \f005"; font-family: 'Font Awesome 6 Free'; font-weight: 900; margin-left: auto; }
+    .tópico.n2 .header::after { content: " \f005\f005"; font-family: 'Font Awesome 6 Free'; font-weight: 900; margin-left: auto; }
+    .tópico.n3 .header::after { content: " \f005\f005\f005"; font-family: 'Font Awesome 6 Free'; font-weight: 900; margin-left: auto; }
+    .tópico.n4 .header::after { content: " \f005\f005\f005\f005"; font-family: 'Font Awesome 6 Free'; font-weight: 900; margin-left: auto; }
+    .tópico.n5 .header::after { content: " \f005\f005\f005\f005\f005"; font-family: 'Font Awesome 6 Free'; font-weight: 900; margin-left: auto; }
+
+    .filhos {
+      display: none;
+      margin-left: 20px;
+      counter-reset: item;
+    }
+
+    .bg1 { background: #50b8e7; }
+    .bg2 { background: #84cdee; }
+    .bg3 { background: #b9e2f5; }
+    .bg4 { background: #dcf0fa; }
+    .bg5 { background: #edf7fc; }
+    .bg6 { background: #E6E6FA; }
+  </style>
+</head>
+<body>
+  <h1>
+    Como ser um DEV em 2025
+    <div class="actions">
+      <button onclick="expandirTudo()"><i class="fas fa-plus"></i> Expandir tudo</button>
+      <button onclick="recolherTudo()"><i class="fas fa-minus"></i> Recolher tudo</button>
+    </div>
+  </h1>
+
+  <div class="quadrado">
+    <div class="tópico n1 bg1">
+      <div class="header" onclick="toggle(this)">Lógica de Programação</div>
+      <div class="filhos">
+        <div class="tópico n2 bg1"><div class="header">Tipos de Variáveis (int, float, string, bool, etc.)</div></div>
+        <div class="tópico n2 bg1"><div class="header">Alocação de Memória (noções básicas)</div></div>
+		<div class="tópico n2 bg1"><div class="header">Entrada/Saída primitiva (input e print no terminal)</div></div>
+        <div class="tópico n2 bg1"><div class="header">Operadores Aritméticos, Relacionais e Lógicos</div></div>
+        <div class="tópico n2 bg1"><div class="header">Chamada de Funções</div></div>
+        <div class="tópico n2 bg1"><div class="header">Chamada Aninhada</div></div>        
+        <div class="tópico n2 bg1"><div class="header">Escopo de Variáveis (local, global)</div></div>
+        <div class="tópico n2 bg1"><div class="header">Estruturas de Decisão (if, else, switch)</div></div>
+        <div class="tópico n2 bg1"><div class="header">Estruturas de Repetição (for, while, do while)</div></div>
+        <div class="tópico n2 bg1"><div class="header">Vetores e Matrizes</div></div>
+        <div class="tópico n2 bg1"><div class="header">Funções Recursivas</div></div>
+        <div class="tópico n2 bg1"><div class="header">Operador Ternário</div></div>
+        <div class="tópico n2 bg1"><div class="header">Manipulação de Strings e Datas</div></div>
+        <div class="tópico n2 bg1"><div class="header">Estruturas de Dados Básicas (listas, dicionários, tuplas e conjuntos)</div></div>
+        <div class="tópico n2 bg1"><div class="header">Tratamento de Exceções (try/catch/finally)</div></div>
+      </div>
+    </div>
+
+    <div class="tópico n1 bg2">
+      <div class="header" onclick="toggle(this)">Habilidades de um DEV 2025</div>
+      <div class="filhos">
+        <div class="tópico n2 bg2"><div class="header">Depuração</div></div>
+        <div class="tópico n2 bg2"><div class="header">Controle de versão - GIT</div></div>
+        <div class="tópico n2 bg2"><div class="header">IA Generativa</div></div>
+      </div>
+    </div>
+
+    <div class="tópico n1 bg3">
+      <div class="header" onclick="toggle(this)">Programação Orientada a Objetos</div>
+      <div class="filhos">
+        <div class="tópico n2 bg3">
+          <div class="header" onclick="toggle(this)">Os 4 Pilares da OO:</div>
+          <div class="filhos">
+            <div class="tópico n3 bg3"><div class="header">Encapsulamento</div></div>
+            <div class="tópico n3 bg3"><div class="header">Abstração</div></div>
+            <div class="tópico n3 bg3"><div class="header">Herança</div></div>
+            <div class="tópico n3 bg3"><div class="header">Polimorfismo</div></div>
+          </div>
+        </div>
+        <div class="tópico n2 bg3"><div class="header">Composição e Agregação</div></div>
+        <div class="tópico n2 bg3"><div class="header">Interface e Classe Abstrata</div></div>
+        <div class="tópico n2 bg3"><div class="header">Construtores e Destrutores</div></div>
+        <div class="tópico n2 bg3"><div class="header">Sobrecarga e Sobrescrita</div></div>
+        <div class="tópico n2 bg3"><div class="header">Camadas (MVC, MVVM ou o que for)</div></div>
+      </div>
+    </div>
+
+    <div class="tópico n1 bg4">
+	  <div class="header" onclick="toggle(this)">Programação Web</div>
+	  <div class="filhos">
+		
+		<div class="tópico n2 bg4">
+		  <div class="header" onclick="toggle(this)">Conceitos</div>
+		  <div class="filhos">
+			<div class="tópico n3 bg4"><div class="header">Cloud Computing</div></div>
+			<div class="tópico n3 bg4"><div class="header">Client/Server: o que roda onde, onde validar o que</div></div>
+		  </div>
+		</div>
+
+		<div class="tópico n2 bg4">
+		  <div class="header" onclick="toggle(this)">Front-end</div>
+		  <div class="filhos">
+			<div class="tópico n3 bg4"><div class="header">Depuração (F12)</div></div>
+
+			<div class="tópico n3 bg4">
+			  <div class="header" onclick="toggle(this)">HTML</div>
+			  <div class="filhos">
+				<div class="tópico n4 bg4"><div class="header">Semântica / principais tags</div></div>
+				<div class="tópico n4 bg4"><div class="header">Formulários</div></div>
+				<div class="tópico n4 bg4"><div class="header">Acessibilidade</div></div>
+			  </div>
+			</div>
+
+			<div class="tópico n3 bg4">
+			  <div class="header" onclick="toggle(this)">CSS</div>
+			  <div class="filhos">
+				<div class="tópico n4 bg4"><div class="header">Sintaxe / Seletores</div></div>
+				<div class="tópico n4 bg4"><div class="header">Box Model</div></div>
+				<div class="tópico n4 bg4"><div class="header">Principais propriedades</div></div>
+				<div class="tópico n4 bg4"><div class="header">Alinhamento / Responsividade</div></div>
+				<div class="tópico n4 bg4"><div class="header">Animações</div></div>
+			  </div>
+			</div>
+
+			<div class="tópico n3 bg4">
+			  <div class="header" onclick="toggle(this)">Javascript</div>
+			  <div class="filhos">
+				<div class="tópico n4 bg4"><div class="header">Sintaxe / Funções / Eventos</div></div>
+				<div class="tópico n4 bg4"><div class="header">Manipulação de elementos HTML/CSS</div></div>
+				<div class="tópico n4 bg4"><div class="header">Validação de formulários</div></div>
+				<div class="tópico n4 bg4"><div class="header">Fetch/AJAX</div></div>
+				<div class="tópico n4 bg4"><div class="header">Localstorage</div></div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+
+		<div class="tópico n2 bg4">
+		  <div class="header" onclick="toggle(this)">Back-end</div>
+		  <div class="filhos">
+			<div class="tópico n3 bg4"><div class="header">Depuração (Postman / Swagger)</div></div>
+			<div class="tópico n3 bg4"><div class="header">Linguagens populares: C# (ASP.NET, Razor), Java (Spring), Python (Flask/Django), PHP, ASP, Node.js</div></div>
+			<div class="tópico n3 bg4"><div class="header">Rotas e Endpoints / REST APIs</div></div>
+			<div class="tópico n3 bg4"><div class="header">Querystring / Post</div></div>
+			<div class="tópico n3 bg4"><div class="header">Sessões / cookies</div></div>
+			<div class="tópico n3 bg4"><div class="header">Upload de arquivos</div></div>
+			<div class="tópico n3 bg4"><div class="header">Segurança básica (validação, sanitização, autenticação)</div></div>
+			<div class="tópico n3 bg4"><div class="header">JSON e XML</div></div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+    <div class="tópico n1 bg5">
+	  <div class="header" onclick="toggle(this)">Banco de Dados</div>
+	  <div class="filhos">
+
+		<div class="tópico n2 bg5">
+		  <div class="header" onclick="toggle(this)">Modelagem de Dados</div>
+		  <div class="filhos">
+			<div class="tópico n3 bg5"><div class="header">Tabelas, Colunas, Relacionamentos</div></div>
+			<div class="tópico n3 bg5"><div class="header">Chaves primárias e estrangeiras</div></div>
+			<div class="tópico n3 bg5"><div class="header">Normalização</div></div>
+		  </div>
+		</div>
+
+		<div class="tópico n2 bg5">
+		  <div class="header" onclick="toggle(this)">SQL</div>
+		  <div class="filhos">
+			<div class="tópico n3 bg5"><div class="header">Funções comuns (COALESCE, REPLACE, SUBSTRING etc)</div></div>
+			<div class="tópico n3 bg5"><div class="header">DDL (CREATE, ALTER, DROP)</div></div>
+			<div class="tópico n3 bg5"><div class="header">DML (INSERT, UPDATE, DELETE)</div></div>
+			<div class="tópico n3 bg5"><div class="header">DQL (SELECT, JOINs, WHERE)</div></div>
+			<div class="tópico n3 bg5"><div class="header">TCL (COMMIT, ROLLBACK, SAVEPOINT)</div></div>
+			<div class="tópico n3 bg5"><div class="header">Subselects</div></div>
+			<div class="tópico n3 bg5"><div class="header">Tabelas temporárias</div></div>
+			<div class="tópico n3 bg5"><div class="header">Agrupamento / funções de agrupamento (GROUP BY, HAVING, SUM, MIN)</div></div>
+		  </div>
+		</div>
+
+		<div class="tópico n2 bg5"><div class="header">Stored Procedures e Triggers</div></div>
+		<div class="tópico n2 bg5"><div class="header">Banco de Dados Relacional (MySQL, PostgreSQL, SQL Server)</div></div>
+		<div class="tópico n2 bg5"><div class="header">Banco de Dados Não Relacional (MongoDB – noções)</div></div>
+		<div class="tópico n2 bg5"><div class="header">Ferramentas de gerenciamento (phpMyAdmin, DBeaver, pgAdmin)</div></div>
+
+	  </div>
+	</div>
+	
+	<div class="tópico n1 bg6">
+	  <div class="header" onclick="toggle(this)">Habilidades do DEV SR Pica das Galáxia Master of Puppets</div>
+	  <div class="filhos">
+
+		<div class="tópico n2 bg6"><div class="header">Código Limpo</div></div>
+		<div class="tópico n2 bg6"><div class="header">SOLID</div></div>
+		<div class="tópico n2 bg6"><div class="header">Design Patterns</div></div>
+		<div class="tópico n2 bg6"><div class="header">Testes unitários / TDD</div></div>
+		<div class="tópico n2 bg6"><div class="header">Ferramentas de Code Check (VERACODE, Sonarqube etc)</div></div>
+		<div class="tópico n2 bg6"><div class="header">Otimização de uso de memória (Lazy loading, Const VS Var)</div></div>
+		<div class="tópico n2 bg6"><div class="header">Otimização de processamento (I am speed)</div></div>
+		<div class="tópico n2 bg6"><div class="header">Otimização de uso de banco (menos espaço e menos processamento)</div></div>
+
+		<div class="tópico n2 bg6">
+		  <div class="header" onclick="toggle(this)">Segurança</div>
+		  <div class="filhos">
+			<div class="tópico n3 bg6"><div class="header">Hash / criptografia (pra senhas)</div></div>
+			<div class="tópico n3 bg6"><div class="header">Evitando ataques de força bruta</div></div>
+			<div class="tópico n3 bg6"><div class="header">Evitando expor dados sensíveis e estrutura interna</div></div>
+			<div class="tópico n3 bg6"><div class="header">SQL Injection</div></div>
+			<div class="tópico n3 bg6"><div class="header">XSS e CSRF</div></div>
+		  </div>
+		</div>
+
+	  </div>
+	</div>
+
+  </div>
+
+  <script>
+    function toggle(el) {
+      const filhos = el.nextElementSibling;
+      if (filhos && filhos.classList.contains('filhos')) {
+        filhos.style.display = filhos.style.display === 'block' ? 'none' : 'block';
+      }
+    }
+
+    function expandirTudo() {
+      document.querySelectorAll('.filhos').forEach(f => f.style.display = 'block');
+    }
+
+    function recolherTudo() {
+      document.querySelectorAll('.filhos').forEach(f => f.style.display = 'none');
+    }
+
+    document.querySelectorAll('.tópico .header').forEach(header => {
+      header.addEventListener('click', e => {
+        const parent = header.parentElement;
+        const filhos = header.nextElementSibling;
+        if (!filhos || !filhos.classList.contains('filhos')) {
+          let ancestor = parent.parentElement;
+          while (ancestor && !ancestor.classList.contains('quadrado')) {
+            if (ancestor.classList.contains('filhos')) {
+              ancestor.style.display = 'block';
+            }
+            ancestor = ancestor.parentElement;
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
