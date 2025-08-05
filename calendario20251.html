@@ -1,0 +1,245 @@
+e<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Calendário de Aulas - Maio a Julho 2025</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      background: #f5f5f5;
+    }
+	h1 {
+		text-align: center;
+	}
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .month-block {
+	  margin: 5px;
+      background: #fff;
+      padding: 10px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .month-block h2 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    table.calendar {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
+    .calendar th {
+      background: #e0e0e0;
+      padding: 5px;
+    }
+    .calendar td {
+      height: 30px;
+      cursor: default;
+      position: relative;
+    }
+    .CORR2, .SA, .REV {
+      background-color: #c8e6c9;
+      border-radius: 50%;
+    }
+    .Prova {
+      background-color: #ffcdd2;
+      border-radius: 50%;
+    }
+   .TESI {
+	background-color: rgb(0, 253, 154);
+	border-radius: 50%;
+    }
+    .Feriado {
+	background-color: #e0e0e0;
+	border-radius: 50%;
+	font-weight: bold;
+    }
+    .calendar td:hover::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 2px solid #1976d2;
+      border-radius: 50%;
+    }
+    .calendar .asterisco::before {
+      content: '*';
+      font-size: 0.7em;
+      position: absolute;
+      top: 2px;
+      right: 4px;
+      color: #333;
+    }
+    table.agenda {
+      margin-top: 5px;
+      width: 100%;
+      font-size: 0.9em;
+      border-collapse: collapse;
+    }
+    .agenda th {
+      text-align: left;
+      background: #e0e0e0;
+      padding: 4px;
+    }
+    .agenda td {
+      padding: 4px;
+    }
+    .agenda tr {
+      transition: background-color 0.3s ease;
+    }
+    .agenda tr:hover {
+      background-color: #bbdefb;
+    }
+    .highlight {
+      background-color: #bbdefb !important;
+    }
+	.hoje {
+	  font-weight: bold;
+	  color: #003366; /* azul marinho */
+	  border: 3px dashed gold;
+      border-radius: 50%;
+	}
+	
+	
+  </style>
+</head>
+<body>
+  <div class="month-block"><h1>Calendário de Aulas - Maio a Julho 2025</h1></div>
+  <div class="grid" id="calendario-container"></div>
+  <div class="grid" id="agenda-container"></div>
+
+  <script>
+    const aulas = [
+      { data: '2025-05-07 ', tema: 'SA', obs: '' },
+      { data: '2025-05-13 ', tema: 'SA', obs: '' },
+      { data: '2025-05-14 ', tema: 'SA', obs: '' },	    
+      { data: '2025-05-20 ', tema: 'SA', obs: '' },
+      { data: '2025-05-22 ', tema: 'TESI', obs: '*<i>Testes de Sistemas</i>' },
+      { data: '2025-05-27 ', tema: 'SA', obs: '' },
+      { data: '2025-05-29 ', tema: 'TESI', obs: '*<i>Testes de Sistemas</i>' },
+      { data: '2025-06-03 ', tema: 'REV', obs: 'Revisão Prova Objetiva 2' },      
+      { data: '2025-06-05 ', tema: 'SA', obs: '*<i>Aula com outro docente</i>' },
+      { data: '2025-06-10 ', tema: 'Prova', obs: 'Prova Objetiva 2' },
+      { data: '2025-06-12 ', tema: 'SA', obs: '*<i>Aula com outro docente</i>' },
+      { data: '2025-06-17 ', tema: 'CORR2', obs: 'Correção Prova 2' },
+      { data: '2025-06-18 ', tema: 'CORR2', obs: 'Mais Correção Mais Prova 2' },
+      { data: '2025-06-19 ', tema: 'Feriado', obs: 'Corpus Christi' },
+      { data: '2025-06-24 ', tema: 'Prova', obs: 'REC Prova 2' },
+      { data: '2025-06-25 ', tema: 'SA', obs: '' },
+      { data: '2025-06-26 ', tema: 'SA', obs: '' },            
+      { data: '2025-07-01 ', tema: 'SA', obs: '' },
+      { data: '2025-07-02 ', tema: 'Prova', obs: 'Exercício individual PHP sem internet (Caio style)' },      
+      { data: '2025-07-03 ', tema: 'SA', obs: '' },
+      { data: '2025-07-08 ', tema: 'Prova', obs: 'Apresentação SA' },
+      { data: '2025-07-09 ', tema: 'Prova', obs: 'REC SA' },
+      { data: '2025-07-10 ', tema: 'Prova', obs: 'Exame' }
+    ];
+
+    const meses = [
+      { nome: 'Maio', mes: 4 },
+      { nome: 'Junho', mes: 5 },
+      { nome: 'Julho', mes: 6 }
+    ];
+
+    function criarCalendario(mes, ano) {
+      const semanas = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+      const primeiroDia = new Date(ano, mes, 1);
+      const ultimoDia = new Date(ano, mes, 0);
+      let calendario = '<table class="calendar"><thead><tr>' + semanas.map(d => `<th>${d}</th>`).join('') + '</tr></thead><tbody><tr>';
+      let diaSemana = primeiroDia.getDay();
+
+      for (let i = 0; i < diaSemana; i++) {
+        calendario += '<td></td>';
+      }
+
+      for (let dia = 1; dia <= ultimoDia.getDate(); dia++) {
+        const dataStr = `${ano}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')} `;
+        const aula = aulas.find(a => a.data === dataStr);
+        const temOutroProf = aula && aula.obs && aula.obs.includes('*');
+        const className = aula ? aula.tema : '';
+        const asterisco = temOutroProf ? ' asterisco' : '';
+        const title = aula ? (aula.obs.replace(/\*/g, '').replace('<i>', '').replace('</i>','') || aula.tema) : '';
+        calendario += `<td class="${className}${asterisco}" data-ref="${dataStr}" title="${title}">${dia}</td>`;
+        diaSemana++;
+        if (diaSemana > 6 && dia !== ultimoDia.getDate()) {
+          calendario += '</tr><tr>';
+          diaSemana = 0;
+        }
+      }
+
+      while (diaSemana > 0 && diaSemana <= 6) {
+        calendario += '<td></td>';
+        diaSemana++;
+      }
+
+      calendario += '</tr></tbody></table>';
+      return calendario;
+    }
+
+    function criarAgenda(mes, ano) {
+      const registros = aulas.filter(a => new Date(a.data).getMonth() === mes);
+      let html = '<table class="agenda"><thead><tr><th>Data</th><th>Tema</th><th>Obs</th></tr></thead><tbody>';
+      registros.forEach(a => {
+		const dataCalc = new Date(a.data);
+
+        const dataBr = dataCalc.toLocaleDateString('pt-BR');
+        html += `<tr data-ref="${a.data}"><td>${dataBr}</td><td>${a.tema}</td><td>${a.obs}</td></tr>`;
+      });
+      html += '</tbody></table>';
+      return html;
+    }
+
+    const calendarioDiv = document.getElementById('calendario-container');
+    const agendaDiv = document.getElementById('agenda-container');
+    const ano = 2025;
+
+    meses.forEach(m => {
+      const bloco = document.createElement('div');
+      bloco.className = 'month-block';
+      bloco.innerHTML = `<h2>${m.nome}</h2>` + criarCalendario(m.mes, ano);
+      calendarioDiv.appendChild(bloco);
+    });
+
+    meses.forEach(m => {
+      const bloco = document.createElement('div');
+      bloco.className = 'month-block';
+      bloco.innerHTML = criarAgenda(m.mes, ano);
+      agendaDiv.appendChild(bloco);
+    });
+
+    document.querySelectorAll('.calendar td[data-ref]').forEach(td => {
+      td.addEventListener('mouseover', () => {
+        const ref = td.dataset.ref;
+        document.querySelectorAll(`.agenda tr[data-ref="${ref}"]`).forEach(tr => {
+          tr.classList.add('highlight');
+        });
+      });
+      td.addEventListener('mouseout', () => {
+        const ref = td.dataset.ref;
+        document.querySelectorAll(`.agenda tr[data-ref="${ref}"]`).forEach(tr => {
+          tr.classList.remove('highlight');
+        });
+      });
+    });
+	
+	const hoje = new Date();
+	const diaHoje = hoje.getDate().toString().padStart(2, '0');
+	const mesHoje = (hoje.getMonth() + 1).toString().padStart(2, '0');
+	const anoHoje = hoje.getFullYear();
+	
+	document.querySelectorAll('.calendar td[data-ref]')[6]
+
+	const celulas = document.querySelectorAll('.calendar td[data-ref]');
+	celulas.forEach(celula => {
+	  const dataCelula = celula.getAttribute('data-ref');
+	  if (dataCelula === `${anoHoje}-${mesHoje}-${diaHoje} `) {
+		celula.classList.add('hoje');
+	  }
+	});
+  </script>
+</body>
+</html>

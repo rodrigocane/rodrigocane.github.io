@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CALENDÁRIO PRAP 2025/2</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #f5f5f5;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      background-color: white;
+      text-align: center;
+      padding: 12px;
+      font-size: 3em;
+      position: relative;
+    }
+
+    header sup {
+      font-size: 0.4em;
+      color: #999;
+      position: absolute;
+      top: 5px;
+      right: 10px;
+    }
+
+    .main {
+      display: flex;
+      padding: 20px;
+      gap: 20px;
+      height: 90vh;
+      box-sizing: border-box;
+    }
+
+    .left-column {
+      width: 30%;
+      background-color: white;      
+      position: relative;
+      overflow: auto;
+      display: flex;
+    }
+
+    .month-labels {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-right: 2px;
+	  height: 100%;        /* força a altura igual ao .left-column */
+	  align-self: stretch; /* garante que se estique no flex */
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      flex-grow: 1;
+    }
+
+    .day {
+      background-color: #e0e0e0;
+      padding: 8px;
+      text-align: center;
+      position: relative;
+    }
+
+    .day.dimmed {
+      color: #aaa;
+    }
+
+    .day.bold {
+      font-weight: bold;
+    }
+
+    .day.outlined {
+      outline: 2px solid red;
+    }
+
+    .tooltip {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 4px 8px;
+      background-color: #444;
+      color: white;
+      font-size: 0.8em;
+      border-radius: 4px;
+      white-space: nowrap;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .month-label {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      font-weight: bold;
+      color: #444;
+      cursor: pointer;
+      padding: 5px 2px;
+      border: 1px solid #ccc;
+      background-color: #f0f0f0;
+      transition: background 0.3s, color 0.3s;
+      text-align: center;
+      height: 100%;
+    }
+
+    .month-label.highlight {
+      background-color: #ccc;
+      color: black;
+    }
+
+    .right-column {
+      width: 70%;
+      background-color: white;      
+      overflow-y: auto;
+    }
+
+    .log-month {
+      background-color: #ccc;
+      padding: 5px;
+      font-weight: bold;
+    }
+
+    .log-entry {
+      padding: 5px;
+      margin-bottom: 2px;
+      color: #000;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    CALENDÁRIO PRAP 2025/2
+    <sup>Calendário sujeito a alteração sem aviso prévio.</sup>
+  </header>
+
+  <div class="main">
+    <div class="left-column">
+      <div class="month-labels">
+        <div class="month-label" data-month="8">Agosto</div>
+        <div class="month-label" data-month="9">Setembro</div>
+        <div class="month-label" data-month="10">Outubro</div>
+        <div class="month-label" data-month="11">Novembro</div>
+        <div class="month-label" data-month="12">Dezembro</div>
+      </div>
+      <div class="calendar" id="calendar"></div>
+    </div>
+
+    <div class="right-column" id="log"></div>
+  </div>
+	
+
+<script>
+  const calendar = document.getElementById('calendar');
+  const log = document.getElementById('log');
+
+  const cores = [
+    '#3b82f6', '#60a5fa', '#93c5fd', '#bfdbfe', '#dbeafe',
+    '#eff6ff', '#a5b4fc', '#c7d2fe', '#dbeafe', '#e0f2fe', '#f0f9ff'
+  ];
+
+  const corFeriado = '#b2e5b2'; // verde suave para feriados
+
+  const diasLetivos = [
+  '20/08', '22/08', '27/08', '29/08', '03/09', '05/09', '10/09',
+  '12/09', '17/09', '19/09', '24/09', '26/09',
+  '01/10', '08/10', '15/10', '22/10', '29/10', '05/11', '12/11',
+  '19/11', '26/11', '03/12', '10/12'];
+  const blocos = [
+    ['Revisão', '1', 'Revisão Python', 'Variáveis, in/out, fluxo controle, laço repetição, funções'],
+	['Git', '1', 'Git', 'O sistema de controle de versão usado por 10 a cada 10 empresas.'],
+	['POO 1', '2', 'Programação Orientada a Objetos', 'Classes e métodos. Encapsulamento e abstração.'],
+	['Pandas', '2', 'Pandas', 'Processamento de planilhas e massas de dados'],
+	['TKinter', '4', 'TKinter', 'Interface gráfica básica'],
+	['BD', '3', 'BD', 'Interação com BD'],
+	['Prova Objetiva', '1', '<b>Prova Objetiva</b>', 'Prova Objetiva individual temas 3 a 6'],
+	['POO 2', '3', 'Mais Programação. Mais Orientada a Objetos', 'Interfaces. Herança. Composição. Separação de Responsabilidades'],
+	['Testes Unitários', '2', 'Testes Unitários', 'Testes unitários com Pytest'],
+	['Prova Prática', '1', '<b>Prova Prática</b>', 'Prova Prática individual sobre tudo'],
+	['SA', '5', 'Situação de Aprendizagem', 'Sistema visual que usará o banco criado em BADA']
+  ];
+
+  const feriados = [
+    { data: '07/09', descricao: 'Dia da Independência' },
+    { data: '12/10', descricao: 'Dia das crianças' },
+    { data: '13/10', descricao: 'Recesso - Dia do Professor' },
+    { data: '02/11', descricao: 'Dia de Finados' },
+    { data: '15/11', descricao: 'Proclamação da República' },
+    { data: '20/11', descricao: 'Dia da Consciência Negra' }
+  ];
+
+  const aulasPorDia = [];
+  let i = 0;
+  blocos.forEach((bloco, blocoIndex) => {
+    const [sigla, carga, tema, descricao] = bloco;
+    for (let j = 1; j <= carga; j++) {
+      const data = diasLetivos[i];
+      if (!data) break;
+      aulasPorDia.push({
+        data,
+        sigla,
+        tema,
+        descricao,
+        ordem: j,
+        total: carga,
+        cor: cores[blocoIndex % cores.length]
+      });
+      i++;
+    }
+  });
+
+  feriados.forEach(f => {
+    aulasPorDia.push({
+      data: f.data,
+      sigla: 'FER',
+      tema: f.descricao,
+      descricao: '',
+      ordem: 1,
+      total: 1,
+      cor: corFeriado
+    });
+  });
+
+  function formatarData(data) {
+    const [dia, mes] = data.split('/');
+    const nomes = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+    return `${parseInt(dia)} de ${nomes[parseInt(mes) - 1]}`;
+  }
+
+  const start = new Date(2025, 7, 1);
+  const end = new Date(2025, 11, 27);
+
+  const firstWeekDay = new Date(start.getFullYear(), start.getMonth(), 1).getDay();
+  const offsetStart = new Date(start);
+  offsetStart.setDate(offsetStart.getDate() - firstWeekDay);
+
+  const lastDate = end; //new Date(end.getFullYear(), end.getMonth() + 1, 0);
+  const lastWeekDay = lastDate.getDay();
+  const offsetEnd = new Date(lastDate);
+  offsetEnd.setDate(offsetEnd.getDate() + (6 - lastWeekDay));
+
+  const dayMap = {};
+
+  for (let d = new Date(offsetStart); d <= offsetEnd; d.setDate(d.getDate() + 1)) {
+    const dia = d.getDate().toString().padStart(2, '0');
+    const mes = (d.getMonth() + 1).toString().padStart(2, '0');
+    const id = `${dia}/${mes}`;
+
+    const dayDiv = document.createElement('div');
+    dayDiv.className = 'day';
+    dayDiv.dataset.month = d.getMonth() + 1;
+    dayDiv.dataset.id = id;
+
+    if (d.getMonth() + 1 < 8 || d.getMonth() + 1 > 12) {
+      dayDiv.classList.add('dimmed');
+    }
+
+    const weekDay = d.getDay();
+    if (weekDay === 0 || weekDay === 6) {
+      dayDiv.classList.add('dimmed');
+    }
+
+    dayDiv.textContent = d.getDate();
+    dayMap[id] = dayDiv;
+    calendar.appendChild(dayDiv);
+  }
+
+  aulasPorDia.forEach((aula) => {
+    const div = dayMap[aula.data];
+    if (!div) return;
+    div.style.backgroundColor = aula.cor;
+
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+    tooltip.style.backgroundColor = aula.cor;
+    tooltip.innerText = `${formatarData(aula.data)} - ${aula.sigla} - ${aula.ordem}/${aula.total}`;
+    tooltip.style.display = 'none';
+    div.appendChild(tooltip);
+
+    div.addEventListener('mouseenter', () => {
+      tooltip.style.display = 'block';
+    });
+    div.addEventListener('mouseleave', () => {
+      tooltip.style.display = 'none';
+    });
+  });
+
+  let mesAtual = '';
+  aulasPorDia.sort((a, b) => {
+    const [d1, m1] = a.data.split('/').map(Number);
+    const [d2, m2] = b.data.split('/').map(Number);
+    return m1 - m2 || d1 - d2;
+  });
+
+  aulasPorDia.forEach((aula) => {
+    const [dia, mes] = aula.data.split('/');
+
+    if (mesAtual !== mes) {
+      mesAtual = mes;
+      const linhaMes = document.createElement('div');
+      linhaMes.className = 'log-month';
+      linhaMes.textContent = `${formatarData(aula.data).split(' de ')[1].toUpperCase()}`;
+      log.appendChild(linhaMes);
+    }
+
+    const entrada = document.createElement('div');
+    entrada.className = 'log-entry';
+    entrada.style.backgroundColor = aula.cor;
+    entrada.innerHTML  = `${aula.data} - ${aula.tema}${aula.descricao ? ' - ' + aula.descricao : ''}`;
+
+    entrada.addEventListener('mouseenter', () => {
+      highlightMonth(parseInt(mes));
+      const diaDiv = dayMap[aula.data];
+      if (diaDiv) diaDiv.classList.add('outlined');
+    });
+
+    entrada.addEventListener('mouseleave', () => {
+      clearHighlight();
+    });
+
+    log.appendChild(entrada);
+  });
+
+  document.querySelectorAll('.month-label').forEach(label => {
+    label.addEventListener('mouseover', () => {
+      highlightMonth(label.dataset.month);
+    });
+    label.addEventListener('mouseout', () => {
+      clearHighlight();
+    });
+  });
+
+  function highlightMonth(month) {
+    document.querySelectorAll('.day').forEach(day => {
+      if (day.dataset.month === String(month)) {
+        day.classList.add('bold');
+      } else {
+        day.classList.add('dimmed');
+      }
+    });
+    document.querySelectorAll('.month-label').forEach(label => {
+      if (label.dataset.month === String(month)) {
+        label.classList.add('highlight');
+      }
+    });
+  }
+
+  function clearHighlight() {
+    document.querySelectorAll('.day').forEach(day => {
+      day.classList.remove('bold', 'dimmed', 'outlined');
+    });
+    document.querySelectorAll('.month-label').forEach(label => {
+      label.classList.remove('highlight');
+    });
+  }
+  </script>
+</body>
+</html>

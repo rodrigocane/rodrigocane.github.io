@@ -1,245 +1,150 @@
-e<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Calendário de Aulas - Maio a Julho 2025</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professor Cane</title>
   <style>
     body {
-      font-family: sans-serif;
-      margin: 20px;
-      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
     }
-	h1 {
-		text-align: center;
-	}
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+
+    .card {
+      background-color: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      padding: 30px 40px;
+      margin-bottom: 30px;
+      text-align: center;
+      max-width: 90%;
+      width: 500px;
+      animation: fadeIn 1s ease;
     }
-    .month-block {
-	  margin: 5px;
-      background: #fff;
-      padding: 10px;
+
+    .card h1 {
+      margin: 0;
+      font-size: 2em;
+      color: #1e3a8a;
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .links a,
+    .links button {
+      text-decoration: none;
+      padding: 12px;
+      border-radius: 10px;
+      background-color: #3b82f6;
+      color: white;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.2s;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border: none;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    .links a:hover,
+    .links button:hover {
+      background-color: #2563eb;
+      transform: translateY(-2px);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    dialog {
+      border: none;
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    .month-block h2 {
+      padding: 20px 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      font-size: 1.1em;
+      max-width: 90%;
+      width: 400px;
       text-align: center;
-      margin-bottom: 10px;
+      animation: fadeIn 0.3s ease-out;
     }
-    table.calendar {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: center;
+
+    dialog::backdrop {
+      background: rgba(0, 0, 0, 0.4);
     }
-    .calendar th {
-      background: #e0e0e0;
-      padding: 5px;
-    }
-    .calendar td {
-      height: 30px;
-      cursor: default;
-      position: relative;
-    }
-    .CORR2, .SA, .REV {
-      background-color: #c8e6c9;
-      border-radius: 50%;
-    }
-    .Prova {
-      background-color: #ffcdd2;
-      border-radius: 50%;
-    }
-   .TESI {
-	background-color: rgb(0, 253, 154);
-	border-radius: 50%;
-    }
-    .Feriado {
-	background-color: #e0e0e0;
-	border-radius: 50%;
-	font-weight: bold;
-    }
-    .calendar td:hover::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border: 2px solid #1976d2;
-      border-radius: 50%;
-    }
-    .calendar .asterisco::before {
-      content: '*';
-      font-size: 0.7em;
-      position: absolute;
-      top: 2px;
-      right: 4px;
-      color: #333;
-    }
-    table.agenda {
-      margin-top: 5px;
-      width: 100%;
+
+    .autor {
+      margin-top: 10px;
       font-size: 0.9em;
-      border-collapse: collapse;
+      color: #555;
+      font-style: italic;
     }
-    .agenda th {
-      text-align: left;
-      background: #e0e0e0;
-      padding: 4px;
-    }
-    .agenda td {
-      padding: 4px;
-    }
-    .agenda tr {
-      transition: background-color 0.3s ease;
-    }
-    .agenda tr:hover {
-      background-color: #bbdefb;
-    }
-    .highlight {
-      background-color: #bbdefb !important;
-    }
-	.hoje {
-	  font-weight: bold;
-	  color: #003366; /* azul marinho */
-	  border: 3px dashed gold;
-      border-radius: 50%;
-	}
-	
-	
   </style>
 </head>
 <body>
-  <div class="month-block"><h1>Calendário de Aulas - Maio a Julho 2025</h1></div>
-  <div class="grid" id="calendario-container"></div>
-  <div class="grid" id="agenda-container"></div>
 
-  <script>
-    const aulas = [
-      { data: '2025-05-07 ', tema: 'SA', obs: '' },
-      { data: '2025-05-13 ', tema: 'SA', obs: '' },
-      { data: '2025-05-14 ', tema: 'SA', obs: '' },	    
-      { data: '2025-05-20 ', tema: 'SA', obs: '' },
-      { data: '2025-05-22 ', tema: 'TESI', obs: '*<i>Testes de Sistemas</i>' },
-      { data: '2025-05-27 ', tema: 'SA', obs: '' },
-      { data: '2025-05-29 ', tema: 'TESI', obs: '*<i>Testes de Sistemas</i>' },
-      { data: '2025-06-03 ', tema: 'REV', obs: 'Revisão Prova Objetiva 2' },      
-      { data: '2025-06-05 ', tema: 'SA', obs: '*<i>Aula com outro docente</i>' },
-      { data: '2025-06-10 ', tema: 'Prova', obs: 'Prova Objetiva 2' },
-      { data: '2025-06-12 ', tema: 'SA', obs: '*<i>Aula com outro docente</i>' },
-      { data: '2025-06-17 ', tema: 'CORR2', obs: 'Correção Prova 2' },
-      { data: '2025-06-18 ', tema: 'CORR2', obs: 'Mais Correção Mais Prova 2' },
-      { data: '2025-06-19 ', tema: 'Feriado', obs: 'Corpus Christi' },
-      { data: '2025-06-24 ', tema: 'Prova', obs: 'REC Prova 2' },
-      { data: '2025-06-25 ', tema: 'SA', obs: '' },
-      { data: '2025-06-26 ', tema: 'SA', obs: '' },            
-      { data: '2025-07-01 ', tema: 'SA', obs: '' },
-      { data: '2025-07-02 ', tema: 'Prova', obs: 'Exercício individual PHP sem internet (Caio style)' },      
-      { data: '2025-07-03 ', tema: 'SA', obs: '' },
-      { data: '2025-07-08 ', tema: 'Prova', obs: 'Apresentação SA' },
-      { data: '2025-07-09 ', tema: 'Prova', obs: 'REC SA' },
-      { data: '2025-07-10 ', tema: 'Prova', obs: 'Exame' }
+  <div class="card">
+    <h1>Bem-vindo ao site do Professor Cane</h1>
+  </div>
+
+  <div class="card links">
+    <a href="calendarioPrap.html">📅 Calendário - Python</a>
+    <a href="calendarioBada.html">📅 Calendário - Banco de dados</a>
+    <a href="calendario20251.html">📅 Calendário - DESI 2025/1 (deprecated)</a>
+    <button onclick="mostrarSabedoria()">🧠 Sabedoria Aleatória</button>
+  </div>
+  
+  <dialog id="caixaSabedoria">
+    <div id="frase"></div>
+    <div class="autor" id="autor"></div>
+  </dialog>
+<script>
+    const frases = [
+      { texto: "Do or do not. There is no try.", autor: "Yoda, Master" },
+      { texto: "Faça ou não faça. Tentativa não há.", autor: "Yoda, Mestre" },
+      { texto: "Do or do not. There is no try.", autor: "Yoda, Master" },
+      { texto: "Do or do not. There is no try.", autor: "Yoda, Master" },
+	  { texto: "Com grandes poderes vem grandes responsabilidades.", autor: "Parker, Ben" },
+	  { texto: "Com grandes poderes vem grandes responsabilidades.", autor: "Parker, Ben" },
+	  { texto: "A culpa é minha e eu coloco em quem eu quiser", autor: "Simpson, Homer J." },
+	  { texto: "Tentar é o primeiro passo rumo ao fracasso.", autor: "Simpson, Homer J." },
+	  { texto: "O difícil, como vocês sabem, não é fácil", autor: "Matheus, Vicente (ex-presidente do Corinthians)." },
+	  { texto: "A vida é um eterno perde e ganha. Um dia a gente perde. No outro a gente apanha.", autor: "D2, Marcelo" },
+	  { texto: "A vida é um eterno perde e ganha. Um dia a gente perde. No outro a gente apanha.", autor: "D2, Marcelo" },
+	  { texto: "Se a pena de um crime é uma multa, então essa lei só vale pros pobres.", autor: "Autor desconhecido." },
+	  { texto: "Não há caminho para a felicidade. A felicidade é o caminho.", autor: "Confúcio" },
+      { texto: "A educação é a arma mais poderosa que você pode usar para mudar o mundo.", autor: "Nelson Mandela" },
+      { texto: "O maior inimigo do conhecimento não é a ignorância, é a ilusão do conhecimento.", autor: "Stephen Hawking" },
+      { texto: "O maior inimigo do conhecimento não é a ignorância, é a ilusão do conhecimento.", autor: "Stephen Hawking" },
+      { texto: "A persistência é o caminho do êxito.", autor: "Charles Chaplin" },
+      { texto: "Aprender é a única coisa de que a mente nunca se cansa, nunca tem medo e nunca se arrepende.", autor: "Leonardo da Vinci" },
+      { texto: "A mente que se abre a uma nova ideia jamais volta ao seu tamanho original.", autor: "Albert Einstein" },
+      { texto: "A simplicidade é o último grau de sofisticação.", autor: "Leonardo da Vinci" },
+      { texto: "Se você quer resultados diferentes, não faça sempre as mesmas coisas.", autor: "Albert Einstein" }
     ];
 
-    const meses = [
-      { nome: 'Maio', mes: 4 },
-      { nome: 'Junho', mes: 5 },
-      { nome: 'Julho', mes: 6 }
-    ];
+    function mostrarSabedoria() {
+      const aleatoria = frases[Math.floor(Math.random() * frases.length)];
+      document.getElementById('frase').innerText = aleatoria.texto;
+      document.getElementById('autor').innerText = aleatoria.autor;
 
-    function criarCalendario(mes, ano) {
-      const semanas = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-      const primeiroDia = new Date(ano, mes, 1);
-      const ultimoDia = new Date(ano, mes, 0);
-      let calendario = '<table class="calendar"><thead><tr>' + semanas.map(d => `<th>${d}</th>`).join('') + '</tr></thead><tbody><tr>';
-      let diaSemana = primeiroDia.getDay();
+      const dialog = document.getElementById('caixaSabedoria');
+      if (!dialog.open) dialog.showModal();
 
-      for (let i = 0; i < diaSemana; i++) {
-        calendario += '<td></td>';
-      }
-
-      for (let dia = 1; dia <= ultimoDia.getDate(); dia++) {
-        const dataStr = `${ano}-${String(mes + 1).padStart(2, '0')}-${String(dia).padStart(2, '0')} `;
-        const aula = aulas.find(a => a.data === dataStr);
-        const temOutroProf = aula && aula.obs && aula.obs.includes('*');
-        const className = aula ? aula.tema : '';
-        const asterisco = temOutroProf ? ' asterisco' : '';
-        const title = aula ? (aula.obs.replace(/\*/g, '').replace('<i>', '').replace('</i>','') || aula.tema) : '';
-        calendario += `<td class="${className}${asterisco}" data-ref="${dataStr}" title="${title}">${dia}</td>`;
-        diaSemana++;
-        if (diaSemana > 6 && dia !== ultimoDia.getDate()) {
-          calendario += '</tr><tr>';
-          diaSemana = 0;
-        }
-      }
-
-      while (diaSemana > 0 && diaSemana <= 6) {
-        calendario += '<td></td>';
-        diaSemana++;
-      }
-
-      calendario += '</tr></tbody></table>';
-      return calendario;
+      dialog.addEventListener('click', (e) => {
+        if (e.target === dialog) dialog.close();
+      });
     }
-
-    function criarAgenda(mes, ano) {
-      const registros = aulas.filter(a => new Date(a.data).getMonth() === mes);
-      let html = '<table class="agenda"><thead><tr><th>Data</th><th>Tema</th><th>Obs</th></tr></thead><tbody>';
-      registros.forEach(a => {
-		const dataCalc = new Date(a.data);
-
-        const dataBr = dataCalc.toLocaleDateString('pt-BR');
-        html += `<tr data-ref="${a.data}"><td>${dataBr}</td><td>${a.tema}</td><td>${a.obs}</td></tr>`;
-      });
-      html += '</tbody></table>';
-      return html;
-    }
-
-    const calendarioDiv = document.getElementById('calendario-container');
-    const agendaDiv = document.getElementById('agenda-container');
-    const ano = 2025;
-
-    meses.forEach(m => {
-      const bloco = document.createElement('div');
-      bloco.className = 'month-block';
-      bloco.innerHTML = `<h2>${m.nome}</h2>` + criarCalendario(m.mes, ano);
-      calendarioDiv.appendChild(bloco);
-    });
-
-    meses.forEach(m => {
-      const bloco = document.createElement('div');
-      bloco.className = 'month-block';
-      bloco.innerHTML = criarAgenda(m.mes, ano);
-      agendaDiv.appendChild(bloco);
-    });
-
-    document.querySelectorAll('.calendar td[data-ref]').forEach(td => {
-      td.addEventListener('mouseover', () => {
-        const ref = td.dataset.ref;
-        document.querySelectorAll(`.agenda tr[data-ref="${ref}"]`).forEach(tr => {
-          tr.classList.add('highlight');
-        });
-      });
-      td.addEventListener('mouseout', () => {
-        const ref = td.dataset.ref;
-        document.querySelectorAll(`.agenda tr[data-ref="${ref}"]`).forEach(tr => {
-          tr.classList.remove('highlight');
-        });
-      });
-    });
-	
-	const hoje = new Date();
-	const diaHoje = hoje.getDate().toString().padStart(2, '0');
-	const mesHoje = (hoje.getMonth() + 1).toString().padStart(2, '0');
-	const anoHoje = hoje.getFullYear();
-	
-	document.querySelectorAll('.calendar td[data-ref]')[6]
-
-	const celulas = document.querySelectorAll('.calendar td[data-ref]');
-	celulas.forEach(celula => {
-	  const dataCelula = celula.getAttribute('data-ref');
-	  if (dataCelula === `${anoHoje}-${mesHoje}-${diaHoje} `) {
-		celula.classList.add('hoje');
-	  }
-	});
   </script>
 </body>
 </html>
