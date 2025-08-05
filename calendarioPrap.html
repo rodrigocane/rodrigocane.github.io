@@ -85,7 +85,6 @@
       transform: translateX(-50%);
       padding: 4px 8px;
       background-color: #444;
-      color: white;
       font-size: 0.8em;
       border-radius: 4px;
       white-space: nowrap;
@@ -131,11 +130,32 @@
       color: #000;
       cursor: default;
     }
+	.links a,
+    .links button {
+      text-decoration: none;
+      padding: 12px;
+      border-radius: 10px;
+      background-color: #3b82f6;
+      color: white;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.2s;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border: none;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    .links a:hover,
+    .links button:hover {
+      background-color: #2563eb;
+      transform: translateY(-2px);
+    }
   </style>
 </head>
 <body>
   <header>
-    CALENDÁRIO PRAP 2025/2
+    <span class='links'><button onclick="history.back()">Voltar</button></span>
+    CALENDÁRIO PROGRAMAÇÃO DE APLICATIVOS 2025/2 - T DESI 2025/1 N1
     <sup>Calendário sujeito a alteração sem aviso prévio.</sup>
   </header>
 
@@ -167,6 +187,7 @@
   const corFeriado = '#b2e5b2'; // verde suave para feriados
 
   const diasLetivos = [
+  '06/08', '08/08', '13/08', '15/08',
   '20/08', '22/08', '27/08', '29/08', '03/09', '05/09', '10/09',
   '12/09', '17/09', '19/09', '24/09', '26/09',
   '01/10', '08/10', '15/10', '22/10', '29/10', '05/11', '12/11',
