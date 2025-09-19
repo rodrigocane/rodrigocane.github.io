@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Resumo - Prova Python</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .accordion {
+      background: #fff;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .accordion-header {
+      background: #007acc;
+      color: white;
+      padding: 12px;
+      cursor: pointer;
+      border-radius: 8px 8px 0 0;
+      user-select: none;
+    }
+    .accordion-content {
+      display: none;
+      padding: 15px;
+      border-top: 1px solid #ccc;
+    }
+    pre {
+      background: #272822;
+      color: #f8f8f2;
+      padding: 8px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    .subtopic {
+      margin-bottom: 15px;
+    }
+    .subtopic h4 {
+      margin: 5px 0;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Resumo para a Prova de Python</h1>
+
+  <!-- Python geral -->
+  <div class="accordion">
+    <div class="accordion-header">🐍 Python em geral</div>
+    <div class="accordion-content">
+      <div class="subtopic">
+        <h4>Funções</h4>
+        <p>Definimos funções com <code>def</code> para organizar o código.</p>
+        <pre><code>def soma(a, b):
+    return a + b</code></pre>
+      </div>
+      <div class="subtopic">
+        <h4>print()</h4>
+        <p>Mostra informações no console.</p>
+        <pre><code>print("Olá, mundo!")</code></pre>
+      </div>
+      <div class="subtopic">
+        <h4>Listas, Tuplas e Dicionários</h4>
+        <p>Estruturas para guardar coleções de dados.</p>
+        <pre><code>lista = [1, 2, 3]
+tupla = (1, 2, 3)
+dic = {"nome": "Ana", "idade": 20}</code></pre>
+      </div>
+      <div class="subtopic">
+        <h4>pip install</h4>
+        <p>Usado para instalar pacotes externos.</p>
+        <pre><code>pip install pandas</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- POO -->
+  <div class="accordion">
+    <div class="accordion-header">⚙️ Programação Orientada a Objetos</div>
+    <div class="accordion-content">
+      <div class="subtopic">
+        <h4>Classe</h4>
+        <p>Define um "molde" para criar objetos.</p>
+        <pre><code>class Pessoa:
+    pass</code></pre>
+      </div>
+      <div class="subtopic">
+        <h4>Métodos</h4>
+        <p>Funções dentro de uma classe.</p>
+        <pre><code>class Pessoa:
+    def falar(self):
+        print("Olá!")</code></pre>
+      </div>
+      <div class="subtopic">
+        <h4>Construtor</h4>
+        <p>Inicializa atributos ao criar o objeto.</p>
+        <pre><code>class Pessoa:
+    def __init__(self, nome):
+        self.nome = nome</code></pre>
+      </div>
+      <div class="subtopic">
+        <h4>Propriedades</h4>
+        <p>Atributos que descrevem o objeto.</p>
+        <pre><code>p = Pessoa("Maria")
+print(p.nome)</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pandas -->
+  <div class="accordion">
+    <div class="accordion-header">📊 Pandas</div>
+    <div class="accordion-content">
+      <div class="subtopic">
+        <h4>DataFrame</h4>
+        <p>Tabela de dados em linhas e colunas.</p>
+        <pre><code>import pandas as pd
+df = pd.DataFrame({"A":[1,2], "B":[3,4]})</code></pre>
+      </div>
+      <div class="subtopic">
+        <h4>Criação de colunas</h4>
+        <p>Podemos adicionar colunas diretamente.</p>
+        <pre><code>df["C"] = df["A"] + df["B"]</code></pre>
+      </div>
+      <div class="subtopic">
+        <h4>Filtros</h4>
+        <p>Seleciona dados com condições.</p>
+        <pre><code>df[df["A"] > 1]</code></pre>
+      </div>
+      <div class="subtopic">
+        <h4>Funções de agrupamento</h4>
+        <p>Organiza e resume dados.</p>
+        <pre><code>df.groupby("A")["B"].mean()</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tkinter -->
+  <div class="accordion">
+    <div class="accordion-header">🖼️ Tkinter</div>
+    <div class="accordion-content">
+      <div class="subtopic">
+        <h4>Grid x Frame</h4>
+        <p><code>grid()</code> posiciona widgets; <code>Frame</code> organiza áreas.</p>
+        <pre><code>frame = tk.Frame(root)
+frame.grid(row=0, column=0)</code></pre>
+      </div>
+      <div class="subtopic">
+        <h4>tk.Tk() x tk.Toplevel()</h4>
+        <p><code>Tk()</code> cria a janela principal; <code>Toplevel()</code> cria janelas extras.</p>
+        <pre><code>root = tk.Tk()
+nova = tk.Toplevel(root)</code></pre>
+      </div>
+      <div class="subtopic">
+        <h4>Entry, Button, Label</h4>
+        <p>Widgets básicos para input e interface.</p>
+        <pre><code>tk.Entry(root).pack()
+tk.Button(root, text="OK").pack()
+tk.Label(root, text="Oi").pack()</code></pre>
+      </div>
+      <div class="subtopic">
+        <h4>Propriedades</h4>
+        <p>Widgets possuem opções configuráveis.</p>
+        <pre><code>label = tk.Label(root, text="Oi", fg="blue")
+label.pack()</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const headers = document.querySelectorAll(".accordion-header");
+    headers.forEach(h => {
+      h.addEventListener("click", () => {
+        const content = h.nextElementSibling;
+        content.style.display = (content.style.display === "block") ? "none" : "block";
+      });
+    });
+  </script>
+</body>
+</html>
